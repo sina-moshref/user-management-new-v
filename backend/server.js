@@ -3,8 +3,7 @@ import "dotenv/config";
 import Fastify from "fastify";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
-// import sequelize from "./config/database.js";
-import sequelize, { syncModels } from "./config/database.js";
+import sequelize from "./config/database.js";
 import cors from "@fastify/cors";
 import jwt from "@fastify/jwt";
 import { authRoutes } from "./routes/auth.js";
@@ -72,8 +71,6 @@ const start = async () => {
   try {
     await sequelize.authenticate();
     console.log("Sequelize connected ✅");
-
-    await syncModels();
 
     await fastify.listen({ port: PORT || 3000, host: "0.0.0.0" });
 
