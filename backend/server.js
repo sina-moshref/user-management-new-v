@@ -72,7 +72,7 @@ const start = async () => {
     await sequelize.authenticate();
     console.log("Sequelize connected ✅");
 
-    await fastify.listen({ port: PORT || 3000, host: "0.0.0.0" });
+    fastify.listen({ port: PORT || 3000 });
 
     console.log(`🚀 Server running on http://localhost:${PORT || 3000}`);
 
@@ -109,7 +109,6 @@ const start = async () => {
         }
       });
 
-      // Helper function to update lastSeen; returns time used
       const updateLastSeen = async (userId, stats) => {
         const time = new Date().toISOString();
         try {
@@ -126,7 +125,6 @@ const start = async () => {
 
       const ADMIN_ROOM = "role:admin";
 
-      // Socket.IO connection handler
       io.on("connection", async (socket) => {
         const userId = socket.userId;
         const userEmail = socket.userEmail;

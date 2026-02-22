@@ -89,17 +89,17 @@ export default function UsersList() {
     }
   }, []);
 
-  // Initial load only
+
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
-  // When socket was already connected, consider own status synced after first fetch
+
   useEffect(() => {
     if (!loading && socketConnected) setOwnStatusSynced(true);
   }, [loading, socketConnected]);
 
-  // Refetch when server confirms isOnline persisted; then show real status
+
   useEffect(() => {
     if (!socket) return;
     const onSynced = () => {
@@ -109,7 +109,7 @@ export default function UsersList() {
     return () => socket.off("user-online-synced", onSynced);
   }, [socket, fetchUsers]);
 
-  // Instant UI update when any user logs in/out (broadcast from server)
+
   useEffect(() => {
     if (!socket) return;
     const onUserOnline = ({ userId, lastSeen }) => {
