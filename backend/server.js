@@ -72,7 +72,10 @@ const start = async () => {
     await sequelize.authenticate();
     console.log("Sequelize connected ✅");
 
-    fastify.listen({ port: PORT || 3000 });
+    await fastify.listen({
+      port: PORT || 3000,
+      host: "0.0.0.0",
+    });
 
     console.log(`🚀 Server running on http://localhost:${PORT || 3000}`);
 
