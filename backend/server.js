@@ -70,6 +70,7 @@ fastify.get("/health", async () => {
 const start = async () => {
   try {
     await sequelize.authenticate();
+    await sequelize.sync({ alter: true });
     console.log("Sequelize connected ✅");
 
     await fastify.listen({
