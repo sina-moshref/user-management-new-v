@@ -1,23 +1,73 @@
-# Render CLI
+# سیستم مدیریت کاربران (User Management System)
 
-## Installation
+یک سامانه مدیریت کاربران توسعه داده شده با React، Fastify، PostgreSQL و Socket.IO که امکان احراز هویت، مدیریت نقش‌ها و مشاهده وضعیت آنلاین کاربران را فراهم می‌کند.
 
-- [Homebrew](https://render.com/docs/cli#homebrew-macos-linux)
-- [Direct Download](https://render.com/docs/cli#direct-download)
+## فناوری‌های استفاده شده
 
-## Documentation
+### Frontend
 
-Documentation is hosted at https://render.com/docs/cli.
+- React
+- React Router
+- Vite
+- Socket.IO Client
 
-## Contributing
+### Backend
 
-To create a new command, use the `cmd/template.go` template file as a starting point. Reference the [CLI Style Guide](docs/STYLE.md) to learn more about command naming, flags, arguments, and help text conventions.
+- Fastify
+- Sequelize ORM
+- JWT Authentication
+- Socket.IO
+- PostgreSQL
 
-### Dev setup
+### Deployment
 
-We use [prek](https://prek.j178.dev/) to run precommit-compatible checks locally and in CI.
+- Frontend: Netlify
+- Backend: Render
+- Database: PostgreSQL
 
-- If you didn't install `prek` following the [dev setup guide](https://slab.render.com/posts/dev-setup-guide-ect5drdb), do so now (e.g., `brew install prek`)
-- Set up prek git hooks with `prek install`.
+## قابلیت‌ها
 
-Read [AGENTS.md](AGENTS.md) for common dev commands. It's written for humans too!
+- ثبت‌نام کاربران
+- ورود و خروج امن با JWT
+- مدیریت نقش‌ها (Admin، Moderator، User)
+- نمایش وضعیت آنلاین کاربران به صورت لحظه‌ای
+- ثبت آخرین زمان فعالیت (Last Seen)
+- داشبورد مدیریتی
+- مستندسازی API با Swagger
+
+## اطلاعات ورود مدیر سیستم
+
+برای مشاهده امکانات مدیریتی می‌توانید از حساب زیر استفاده کنید:
+
+**Email:** [admin@example.com](mailto:admin@example.com)
+
+**Password:** Admin123!
+
+## راه‌اندازی محلی پروژه
+
+### Backend
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+### Frontend
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+## نکات مهم
+
+- برای استفاده از نسخه آنلاین پروژه، VPN باید فعال باشد.
+- سرویس Backend روی Render میزبانی شده است و ممکن است در برخی شبکه‌ها بدون VPN در دسترس نباشد.
+- در اولین درخواست پس از مدتی عدم استفاده، ممکن است سرویس Render چند ثانیه برای فعال شدن مجدد زمان نیاز داشته باشد.
+
+## لینک پروژه
+
+- Frontend: https://user-managementd.netlify.app
+- Backend API: https://user-management-new-v.onrender.com/
