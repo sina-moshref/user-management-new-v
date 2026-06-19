@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { api } from "../api/client";
 
 function parseJwt(token) {
@@ -20,7 +26,6 @@ export function AuthProvider({ children }) {
   const [socket, setSocket] = useState(null);
   const [socketConnected, setSocketConnected] = useState(false);
 
-
   useEffect(() => {
     if (!token) {
       setSocket(null);
@@ -34,12 +39,12 @@ export function AuthProvider({ children }) {
       try {
         const { io } = await import("socket.io-client");
 
-        newSocket = io("http://localhost:3000", {
+        newSocket = io("https://user-management-new-v.onrender.com", {
           auth: { token },
           transports: ["websocket", "polling"],
           reconnection: true,
           reconnectionDelay: 1000,
-          reconnectionAttempts: 5
+          reconnectionAttempts: 5,
         });
 
         setSocket(newSocket);
@@ -99,15 +104,21 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const login = useCallback(async (email, password) => {
-    const { token: t } = await api.login(email, password);
-    setToken(t);
-  }, [setToken]);
+  const login = useCallback(
+    async (email, password) => {
+      const { token: t } = await api.login(email, password);
+      setToken(t);
+    },
+    [setToken],
+  );
 
-  const register = useCallback(async (email, password, role = "user") => {
-    await api.register(email, password, role);
-    await login(email, password);
-  }, [login]);
+  const register = useCallback(
+    async (email, password, role = "user") => {
+      await api.register(email, password, role);
+      await login(email, password);
+    },
+    [login],
+  );
 
   const logout = useCallback(() => {
     setToken(null);
@@ -124,7 +135,7 @@ export function AuthProvider({ children }) {
     logout,
     isAuthenticated: !!token,
     canAccessMovies: user?.role === "admin" || user?.role === "moderator",
-    canAccessUsers: user?.role === "admin"
+    canAccessUsers: user?.role === "admin",
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
