@@ -11,6 +11,7 @@ import { moviesRoutes } from "./routes/movies.js";
 import { usersRoutes } from "./routes/users.js";
 import User from "./models/User.js";
 const fastify = Fastify({ logger: true });
+import bcrypt from "bcrypt";
 
 const PORT = process.env.PORT;
 
@@ -65,6 +66,18 @@ fastify.register(usersRoutes);
 
 fastify.get("/health", async () => {
   return { status: "ok" };
+});
+
+fastify.get("/create-admin", async (request, reply) => {
+  const passwordHash = await bcrypt.hash("Admin123!", 10);
+
+  const user = await User.create({
+    email: "admin@example.com",
+    role: "admin",
+    passwordHash,
+  });
+
+  return user;
 });
 
 const start = async () => {
