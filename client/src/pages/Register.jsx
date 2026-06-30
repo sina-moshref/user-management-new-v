@@ -3,16 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import styles from "./Auth.module.css";
 
-// const ROLES = [
-//   { value: "user", label: "User" },
-//   { value: "moderator", label: "Moderator" },
-//   { value: "admin", label: "Admin" },
-// ];
-
 export default function Register() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const { register, isAuthenticated, loading } = useAuth();
@@ -25,9 +20,15 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     setSubmitting(true);
     try {
-      await register(email, password, role);
+      await register(name.trim(), email, password);
       navigate("/", { replace: true });
     } catch (err) {
       setError(err.data?.error || err.data?.message || err.message || "Registration failed");
@@ -44,6 +45,18 @@ export default function Register() {
 
         <form onSubmit={handleSubmit} className={styles.form}>
           {error && <div className="form-error">{error}</div>}
+          <div className={styles.field}>
+            <label htmlFor="name">Name</label>
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Your name"
+              required
+              autoComplete="name"
+            />
+          </div>
           <div className={styles.field}>
             <label htmlFor="email">Email</label>
             <input
@@ -69,20 +82,19 @@ export default function Register() {
               autoComplete="new-password"
             />
           </div>
-          {/* <div className={styles.field}>
-            <label htmlFor="role">Role</label>
-            <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              {ROLES.map((r) => (
-                <option key={r.value} value={r.value}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
-          </div> */}
+          <div className={styles.field}>
+            <label htmlFor="confirm-password">Confirm Password</label>
+            <input
+              id="confirm-password"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Repeat your password"
+              minLength={6}
+              required
+              autoComplete="new-password"
+            />
+          </div>
           <button type="submit" className={styles.submit} disabled={submitting}>
             {submitting ? "Creating account…" : "Register"}
           </button>

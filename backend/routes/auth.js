@@ -4,8 +4,13 @@ const registerOptions = {
   schema: {
     body: {
       type: "object",
-      required: ["email", "password"],
+      required: ["name", "email", "password"],
       properties: {
+        name: {
+          type: "string",
+          minLength: 1,
+          maxLength: 100,
+        },
         email: {
           type: "string",
           format: "email",
@@ -29,6 +34,7 @@ const registerOptions = {
         type: "object",
         properties: {
           id: { type: "string" },
+          name: { type: "string" },
           email: { type: "string" },
           role: { type: "string" },
         },

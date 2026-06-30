@@ -2,15 +2,15 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 
 export async function registerHandler(request, reply) {
-  const { email, password, role = "user" } = request.body;
+  const { name, email, password, role = "user" } = request.body;
 
   const existing = await User.findOne({ where: { email } });
   if (existing) return reply.code(409).send({ error: "User exists" });
 
   const passwordHash = await bcrypt.hash(password, 10);
-  const user = await User.create({ email, passwordHash, role });
+  const user = await User.create({ name, email, passwordHash, role });
 
-  return { id: user.id, email: user.email, role: user.role };
+  return { id: user.id, name: user.name, email: user.email, role: user.role };
 }
 
 export async function loginHandler(request, reply) {

@@ -12,7 +12,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  overflow: hidden;
+  overflow: auto;
 }
 
 .table {
@@ -55,7 +55,9 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .btnEdit {

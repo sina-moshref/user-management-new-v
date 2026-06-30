@@ -50,10 +50,10 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ email, password }),
     }),
-  register: (email, password, role = "user") =>
+  register: (name, email, password, role = "user") =>
     apiRequest("/register", {
       method: "POST",
-      body: JSON.stringify({ email, password, role }),
+      body: JSON.stringify({ name, email, password, role }),
     }),
   getMovies: () => apiRequest("/movies"),
   createMovie: (data) =>
