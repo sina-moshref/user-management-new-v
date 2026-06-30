@@ -88,7 +88,7 @@ export async function moviesRoutes(fastify) {
       body: {
         type: "object",
         properties: {
-          name: { type: "string", minLength: 1 },
+          name: { type: "string" },
           rating: { type: "integer", minimum: 1, maximum: 5 },
           description: { type: "string" },
           genre: { type: "string" },

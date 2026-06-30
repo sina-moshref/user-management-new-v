@@ -176,7 +176,7 @@ export default function Movies() {
                       disabled={deletingId === movie.id}
                       title="Delete"
                     >
-                      ✕
+                      🗑
                     </button>
                   </div>
                 )}

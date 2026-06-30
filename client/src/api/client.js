@@ -67,7 +67,7 @@ export const api = {
       body: JSON.stringify(data),
     }),
   deleteMovie: (id) =>
-    apiRequest(`/movies/${id}`, { method: "DELETE" }),
+    dlRequest(`/movies/${id}`, { method: "DELETE" }),
   getUsers: () => apiRequest("/users"),
   updateUser: (id, data) =>
     apiRequest(`/users/${id}`, {
