@@ -29,6 +29,7 @@ export default function Movies() {
   const [formError, setFormError] = useState("");
   const [deletingId, setDeletingId] = useState(null);
   const [confirmMovie, setConfirmMovie] = useState(null);
+  const [search, setSearch] = useState("");
   const [form, setForm] = useState({
     name: "",
     rating: 0,
@@ -39,6 +40,10 @@ export default function Movies() {
   });
 
   const canManage = user?.role === "admin" || user?.role === "moderator";
+
+  const filtered = movies.filter((m) =>
+    m.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   const fetchMovies = useCallback(async () => {
     setLoading(true);
@@ -146,13 +151,23 @@ export default function Movies() {
         )}
       </div>
 
+      <div className={styles.searchBox}>
+        <input
+          type="text"
+          className={styles.searchInput}
+          placeholder="Search movies…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
       {movies.length === 0 ? (
         <div className={styles.empty}>
           No movies yet. {canManage ? "Add one to get started!" : ""}
         </div>
       ) : (
         <div className={styles.grid}>
-          {movies.map((movie) => (
+          {filtered.map((movie) => (
             <div key={movie.id} className={styles.card}>
               <div className={styles.poster}>
                 {movie.imageUrl ? (
