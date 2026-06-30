@@ -40,7 +40,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
 }
 
@@ -62,7 +62,7 @@
 .poster {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 2;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   background: var(--bg);
 }
@@ -70,7 +70,7 @@
 .poster img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
 }
