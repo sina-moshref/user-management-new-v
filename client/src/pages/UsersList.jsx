@@ -43,9 +43,12 @@ function formatLastSeen(iso) {
     const diffDays = Math.floor(diffMs / 86400000);
 
     if (diffMins < 0.5) return "online";
-    if (diffMins < 60) return `${diffMins} ${diffMins === 1 ? "minute" : "minutes"} ago`;
-    if (diffHours < 24) return `${diffHours} ${diffHours === 1 ? "hour" : "hours"} ago`;
-    if (diffDays < 7) return `${diffDays} ${diffDays === 1 ? "day" : "days"} ago`;
+    if (diffMins < 60)
+      return `${diffMins} ${diffMins === 1 ? "minute" : "minutes"} ago`;
+    if (diffHours < 24)
+      return `${diffHours} ${diffHours === 1 ? "hour" : "hours"} ago`;
+    if (diffDays < 7)
+      return `${diffDays} ${diffDays === 1 ? "day" : "days"} ago`;
 
     // For older dates, show formatted date
     return lastSeen.toLocaleDateString(undefined, {
@@ -91,16 +94,13 @@ export default function UsersList() {
     }
   }, []);
 
-
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
-
   useEffect(() => {
     if (!loading && socketConnected) setOwnStatusSynced(true);
   }, [loading, socketConnected]);
-
 
   useEffect(() => {
     if (!socket) return;
@@ -111,21 +111,20 @@ export default function UsersList() {
     return () => socket.off("user-online-synced", onSynced);
   }, [socket, fetchUsers]);
 
-
   useEffect(() => {
     if (!socket) return;
     const onUserOnline = ({ userId, lastSeen }) => {
       setUsers((prev) =>
         prev.map((u) =>
-          u.id === userId ? { ...u, isOnline: true, lastSeen } : u
-        )
+          u.id === userId ? { ...u, isOnline: true, lastSeen } : u,
+        ),
       );
     };
     const onUserOffline = ({ userId, lastSeen }) => {
       setUsers((prev) =>
         prev.map((u) =>
-          u.id === userId ? { ...u, isOnline: false, lastSeen } : u
-        )
+          u.id === userId ? { ...u, isOnline: false, lastSeen } : u,
+        ),
       );
     };
     socket.on("user-online", onUserOnline);
@@ -208,7 +207,9 @@ export default function UsersList() {
                 <tr key={user.id}>
                   <td>{user.email}</td>
                   <td>
-                    <span className={`${styles.roleBadge} ${roleClass(user.role)}`}>
+                    <span
+                      className={`${styles.roleBadge} ${roleClass(user.role)}`}
+                    >
                       {user.role}
                     </span>
                   </td>
@@ -217,8 +218,16 @@ export default function UsersList() {
                     {user.id === currentUser?.id && !ownStatusSynced ? (
                       <span className={styles.lastSeenUpdating}>Updating…</span>
                     ) : (
-                      <span className={user.isOnline ? styles.lastSeenActive : styles.lastSeenNever}>
-                        {user.isOnline ? "online" : formatLastSeen(user.lastSeen)}
+                      <span
+                        className={
+                          user.isOnline
+                            ? styles.lastSeenActive
+                            : styles.lastSeenNever
+                        }
+                      >
+                        {user.isOnline
+                          ? "online"
+                          : formatLastSeen(user.lastSeen)}
                       </span>
                     )}
                   </td>
@@ -235,7 +244,9 @@ export default function UsersList() {
                         type="button"
                         className={`${styles.btn} ${styles.btnDelete}`}
                         onClick={() => setConfirmUser(user)}
-                        disabled={deletingId === user.id || user.id === currentUser?.id}
+                        disabled={
+                          deletingId === user.id || user.id === currentUser?.id
+                        }
                       >
                         {deletingId === user.id ? "Deleting…" : "Delete"}
                       </button>
@@ -254,16 +265,6 @@ export default function UsersList() {
             <h2 className={styles.modalTitle}>Edit user</h2>
             <form onSubmit={handleSaveEdit}>
               <div className={styles.formGroup}>
-                <label htmlFor="edit-email">Email</label>
-                <input
-                  id="edit-email"
-                  type="email"
-                  value={editEmail}
-                  onChange={(e) => setEditEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div className={styles.formGroup}>
                 <label htmlFor="edit-role">Role</label>
                 <select
                   id="edit-role"
@@ -277,27 +278,25 @@ export default function UsersList() {
                   ))}
                 </select>
               </div>
-              <div className={styles.formGroup}>
-                <label htmlFor="edit-password">New password (leave blank to keep)</label>
-                <input
-                  id="edit-password"
-                  type="password"
-                  value={editPassword}
-                  onChange={(e) => setEditPassword(e.target.value)}
-                  placeholder="••••••••"
-                  minLength={6}
-                />
-              </div>
+
               {editError && (
                 <div className="form-error" style={{ marginBottom: "1rem" }}>
                   {editError}
                 </div>
               )}
               <div className={styles.modalActions}>
-                <button type="button" className={`${styles.btn} ${styles.btnCancel}`} onClick={closeEdit}>
+                <button
+                  type="button"
+                  className={`${styles.btn} ${styles.btnCancel}`}
+                  onClick={closeEdit}
+                >
                   Cancel
                 </button>
-                <button type="submit" className={`${styles.btn} ${styles.btnSave}`} disabled={saving}>
+                <button
+                  type="submit"
+                  className={`${styles.btn} ${styles.btnSave}`}
+                  disabled={saving}
+                >
                   {saving ? "Saving…" : "Save"}
                 </button>
               </div>
