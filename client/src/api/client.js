@@ -56,6 +56,11 @@ export const api = {
       body: JSON.stringify({ email, password, role }),
     }),
   getMovies: () => apiRequest("/movies"),
+  createMovie: (data) =>
+    apiRequest("/movies", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
   getUsers: () => apiRequest("/users"),
   updateUser: (id, data) =>
     apiRequest(`/users/${id}`, {
