@@ -5,7 +5,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Movies from "./pages/Movies";
 import { useAuth } from "./context/AuthContext";
-import UsersList  from "./pages/UsersList";
+import UsersList from "./pages/UsersList";
 
 function ProtectedRoute({ children, requireRoles }) {
   const { isAuthenticated, loading, user } = useAuth();
@@ -48,7 +48,7 @@ export default function App() {
           }
         />
       </Route>
-      
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

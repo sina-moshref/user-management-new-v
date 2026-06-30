@@ -16,19 +16,29 @@ export default function Layout() {
       <header className={styles.header}>
         <nav className={styles.nav}>
           <NavLink to="/" className={styles.logo} end>
-            User Management
+            Watch Now
           </NavLink>
           <div className={styles.links}>
-            <NavLink to="/" className={({ isActive }) => (isActive ? styles.active : "")} end>
-              Dashboard
+            <NavLink
+              to="/"
+              className={({ isActive }) => (isActive ? styles.active : "")}
+              end
+            >
+              Home
             </NavLink>
             {canAccessMovies && (
-              <NavLink to="/movies" className={({ isActive }) => (isActive ? styles.active : "")}>
+              <NavLink
+                to="/movies"
+                className={({ isActive }) => (isActive ? styles.active : "")}
+              >
                 Movies
               </NavLink>
             )}
             {canAccessUsers && (
-              <NavLink to="/users" className={({ isActive }) => (isActive ? styles.active : "")}>
+              <NavLink
+                to="/users"
+                className={({ isActive }) => (isActive ? styles.active : "")}
+              >
                 Users
               </NavLink>
             )}
@@ -36,7 +46,11 @@ export default function Layout() {
           <div className={styles.user}>
             <span className={styles.email}>{user?.email}</span>
             <span className={styles.role}>{user?.role}</span>
-            <button type="button" onClick={handleLogout} className={styles.logout}>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className={styles.logout}
+            >
               Log out
             </button>
           </div>
