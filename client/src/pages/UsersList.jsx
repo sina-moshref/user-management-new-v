@@ -232,7 +232,7 @@ export default function UsersList() {
                         type="button"
                         className={`${styles.btn} ${styles.btnDelete}`}
                         onClick={() => handleDelete(user)}
-                        disabled={deletingId === user.id}
+                        disabled={deletingId === user.id || user.id === currentUser?.id}
                       >
                         {deletingId === user.id ? "Deleting…" : "Delete"}
                       </button>
