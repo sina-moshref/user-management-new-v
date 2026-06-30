@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../api/client";
 import StarRating from "../components/StarRating";
+import ConfirmModal from "../components/ConfirmModal";
 import styles from "./Movies.module.css";
 
 const GENRES = [
@@ -27,6 +28,7 @@ export default function Movies() {
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState("");
   const [deletingId, setDeletingId] = useState(null);
+  const [confirmMovie, setConfirmMovie] = useState(null);
   const [form, setForm] = useState({
     name: "",
     rating: 0,
@@ -113,11 +115,12 @@ export default function Movies() {
     }
   };
 
-  const handleDelete = async (movie) => {
-    if (!window.confirm(`Delete "${movie.name}"? This cannot be undone.`)) return;
-    setDeletingId(movie.id);
+  const handleDelete = async () => {
+    if (!confirmMovie) return;
+    setDeletingId(confirmMovie.id);
     try {
-      await api.deleteMovie(movie.id);
+      await api.deleteMovie(confirmMovie.id);
+      setConfirmMovie(null);
       await fetchMovies();
     } catch (err) {
       alert(err.data?.error || err.message || "Delete failed");
@@ -172,7 +175,7 @@ export default function Movies() {
                     <button
                       type="button"
                       className={`${styles.actionBtn} ${styles.actionDelete}`}
-                      onClick={() => handleDelete(movie)}
+                      onClick={() => setConfirmMovie(movie)}
                       disabled={deletingId === movie.id}
                       title="Delete"
                     >
@@ -285,6 +288,15 @@ export default function Movies() {
           </div>
         </div>
       )}
+
+      <ConfirmModal
+        open={!!confirmMovie}
+        title="Delete Movie"
+        message={`Are you sure you want to delete "${confirmMovie?.name}"? This cannot be undone.`}
+        onConfirm={handleDelete}
+        onCancel={() => setConfirmMovie(null)}
+        loading={deletingId === confirmMovie?.id}
+      />
     </div>
   );
 }

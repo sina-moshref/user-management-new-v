@@ -26,14 +26,14 @@ export default function Layout() {
             >
               Home
             </NavLink>
-            {canAccessMovies && (
-              <NavLink
-                to="/movies"
-                className={({ isActive }) => (isActive ? styles.active : "")}
-              >
-                Movies
-              </NavLink>
-            )}
+
+            <NavLink
+              to="/movies"
+              className={({ isActive }) => (isActive ? styles.active : "")}
+            >
+              Movies
+            </NavLink>
+
             {canAccessUsers && (
               <NavLink
                 to="/users"

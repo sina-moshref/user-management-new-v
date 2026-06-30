@@ -31,14 +31,7 @@ export default function App() {
         }
       >
         <Route index element={<Dashboard />} />
-        <Route
-          path="movies"
-          element={
-            <ProtectedRoute requireRoles={["admin", "moderator"]}>
-              <Movies />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="movies" element={<Movies />} />
         <Route
           path="users"
           element={

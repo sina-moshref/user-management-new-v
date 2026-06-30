@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../api/client";
+import ConfirmModal from "../components/ConfirmModal";
 import styles from "./UsersList.module.css";
 
 const ROLES = ["user", "moderator", "admin"];
@@ -73,6 +74,7 @@ export default function UsersList() {
   const [saving, setSaving] = useState(false);
   const [editError, setEditError] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [confirmUser, setConfirmUser] = useState(null);
 
   const fetchUsers = useCallback(async (silent = false) => {
     if (!silent) {
@@ -167,11 +169,12 @@ export default function UsersList() {
     }
   };
 
-  const handleDelete = async (user) => {
-    if (!window.confirm(`Delete user "${user.email}"? This cannot be undone.`)) return;
-    setDeletingId(user.id);
+  const handleDelete = async () => {
+    if (!confirmUser) return;
+    setDeletingId(confirmUser.id);
     try {
-      await api.deleteUser(user.id);
+      await api.deleteUser(confirmUser.id);
+      setConfirmUser(null);
       await fetchUsers();
     } catch (err) {
       alert(err.message || "Delete failed");
@@ -231,7 +234,7 @@ export default function UsersList() {
                       <button
                         type="button"
                         className={`${styles.btn} ${styles.btnDelete}`}
-                        onClick={() => handleDelete(user)}
+                        onClick={() => setConfirmUser(user)}
                         disabled={deletingId === user.id || user.id === currentUser?.id}
                       >
                         {deletingId === user.id ? "Deleting…" : "Delete"}
@@ -302,6 +305,15 @@ export default function UsersList() {
           </div>
         </div>
       )}
+
+      <ConfirmModal
+        open={!!confirmUser}
+        title="Delete User"
+        message={`Are you sure you want to delete "${confirmUser?.email}"? This cannot be undone.`}
+        onConfirm={handleDelete}
+        onCancel={() => setConfirmUser(null)}
+        loading={deletingId === confirmUser?.id}
+      />
     </div>
   );
 }
