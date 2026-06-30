@@ -16,8 +16,10 @@ const fastify = Fastify({ logger: true });
 const PORT = process.env.PORT;
 
 fastify.register(cors, {
-  origin: true,
+  origin: "https://watch-time.pages.dev",
   credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 });
 fastify.register(jwt, {
   secret: "super-secret-change-me",
