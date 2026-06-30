@@ -1,42 +1,179 @@
 .dashboard {
-  max-width: 640px;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, var(--surface) 0%, rgba(167, 139, 250, 0.08) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+}
+
+.greeting {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 .title {
-  margin: 0 0 0.5rem;
-  font-size: 1.75rem;
+  margin: 0 0 0.75rem;
+  font-size: 2rem;
   font-weight: 700;
+  text-transform: capitalize;
 }
 
-.welcome {
-  margin: 0 0 1.5rem;
+.roleLine {
+  margin: 0;
   color: var(--text-muted);
+  font-size: 0.9375rem;
 }
 
-.card {
+.roleBadge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  background: rgba(167, 139, 250, 0.15);
+  color: var(--accent);
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.heroGlow {
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Quick Actions */
+.sectionTitle {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.8125rem;
+}
+
+.actionGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.actionCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.5rem;
+  padding: 1.125rem 1.25rem;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 
-.card h2 {
-  margin: 0 0 1rem;
-  font-size: 1.125rem;
+.actionCard:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(167, 139, 250, 0.1);
+  transform: translateY(-1px);
+}
+
+.actionIcon {
+  font-size: 1.75rem;
+  flex-shrink: 0;
+}
+
+.actionInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.actionInfo h3 {
+  margin: 0 0 0.2rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
-.card ul {
+.actionInfo p {
   margin: 0;
-  padding-left: 1.25rem;
+  font-size: 0.8125rem;
   color: var(--text-muted);
-  line-height: 1.7;
 }
 
-.card a {
+.arrow {
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  transition: transform 0.15s, color 0.15s;
+}
+
+.actionCard:hover .arrow {
   color: var(--accent);
+  transform: translateX(3px);
 }
 
-.card a:hover {
-  text-decoration: underline;
+/* Info Cards */
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.infoCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.infoLabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.infoValue {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
