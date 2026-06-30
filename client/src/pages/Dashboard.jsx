@@ -69,11 +69,13 @@ export default function Dashboard() {
           <span className={styles.infoLabel}>Role</span>
           <span className={styles.infoValue}>{user?.role}</span>
         </div>
-        <div className={styles.infoCard} id="status">
-          <span className={styles.infoLabel}>Status</span>
-          <span className={styles.infoValue}>
-            <span className={styles.statusDot} /> Online
-          </span>
+        <div className={styles.statuss}>
+          <div className={styles.infoCard}>
+            <span className={styles.infoLabel}>Status</span>
+            <span className={styles.infoValue}>
+              <span className={styles.statusDot} /> Online
+            </span>
+          </div>
         </div>
       </section>
     </div>
