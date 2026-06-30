@@ -10,6 +10,7 @@ import { authRoutes } from "./routes/auth.js";
 import { moviesRoutes } from "./routes/movies.js";
 import { usersRoutes } from "./routes/users.js";
 import User from "./models/User.js";
+import Movie from "./models/Movie.js";
 const fastify = Fastify({ logger: true });
 
 const PORT = process.env.PORT;
