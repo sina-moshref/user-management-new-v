@@ -61,6 +61,13 @@ export const api = {
       method: "POST",
       body: JSON.stringify(data),
     }),
+  updateMovie: (id, data) =>
+    apiRequest(`/movies/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    }),
+  deleteMovie: (id) =>
+    apiRequest(`/movies/${id}`, { method: "DELETE" }),
   getUsers: () => apiRequest("/users"),
   updateUser: (id, data) =>
     apiRequest(`/users/${id}`, {

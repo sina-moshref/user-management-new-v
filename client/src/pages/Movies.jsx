@@ -23,8 +23,10 @@ export default function Movies() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [editingMovie, setEditingMovie] = useState(null);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState("");
+  const [deletingId, setDeletingId] = useState(null);
   const [form, setForm] = useState({
     name: "",
     rating: 0,
@@ -34,7 +36,7 @@ export default function Movies() {
     imageUrl: "",
   });
 
-  const canAdd = user?.role === "admin" || user?.role === "moderator";
+  const canManage = user?.role === "admin" || user?.role === "moderator";
 
   const fetchMovies = useCallback(async () => {
     setLoading(true);
@@ -53,14 +55,22 @@ export default function Movies() {
     fetchMovies();
   }, [fetchMovies]);
 
-  const openModal = () => {
+  const openAddModal = () => {
+    setEditingMovie(null);
+    setForm({ name: "", rating: 0, description: "", genre: "", duration: "", imageUrl: "" });
+    setFormError("");
+    setShowModal(true);
+  };
+
+  const openEditModal = (movie) => {
+    setEditingMovie(movie);
     setForm({
-      name: "",
-      rating: 0,
-      description: "",
-      genre: "",
-      duration: "",
-      imageUrl: "",
+      name: movie.name || "",
+      rating: movie.rating || 0,
+      description: movie.description || "",
+      genre: movie.genre || "",
+      duration: movie.duration || "",
+      imageUrl: movie.imageUrl || "",
     });
     setFormError("");
     setShowModal(true);
@@ -68,6 +78,7 @@ export default function Movies() {
 
   const closeModal = () => {
     setShowModal(false);
+    setEditingMovie(null);
     setFormError("");
   };
 
@@ -80,20 +91,38 @@ export default function Movies() {
     setSaving(true);
     setFormError("");
     try {
-      await api.createMovie({
+      const payload = {
         name: form.name.trim(),
         rating: form.rating,
         description: form.description.trim() || undefined,
         genre: form.genre || undefined,
         duration: form.duration.trim() || undefined,
         imageUrl: form.imageUrl.trim() || undefined,
-      });
+      };
+      if (editingMovie) {
+        await api.updateMovie(editingMovie.id, payload);
+      } else {
+        await api.createMovie(payload);
+      }
       closeModal();
       await fetchMovies();
     } catch (err) {
-      setFormError(err.data?.error || err.message || "Failed to create movie");
+      setFormError(err.data?.error || err.message || "Failed to save movie");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDelete = async (movie) => {
+    if (!window.confirm(`Delete "${movie.name}"? This cannot be undone.`)) return;
+    setDeletingId(movie.id);
+    try {
+      await api.deleteMovie(movie.id);
+      await fetchMovies();
+    } catch (err) {
+      alert(err.data?.error || err.message || "Delete failed");
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -107,8 +136,8 @@ export default function Movies() {
           <h1 className={styles.title}>Movies</h1>
           <p className={styles.subtitle}>Browse the collection</p>
         </div>
-        {canAdd && (
-          <button type="button" className={styles.addBtn} onClick={openModal}>
+        {canManage && (
+          <button type="button" className={styles.addBtn} onClick={openAddModal}>
             + Add movie
           </button>
         )}
@@ -116,7 +145,7 @@ export default function Movies() {
 
       {movies.length === 0 ? (
         <div className={styles.empty}>
-          No movies yet. {canAdd ? "Add one to get started!" : ""}
+          No movies yet. {canManage ? "Add one to get started!" : ""}
         </div>
       ) : (
         <div className={styles.grid}>
@@ -130,21 +159,35 @@ export default function Movies() {
                     <span>🎬</span>
                   </div>
                 )}
+                {canManage && (
+                  <div className={styles.cardActions}>
+                    <button
+                      type="button"
+                      className={styles.actionBtn}
+                      onClick={() => openEditModal(movie)}
+                      title="Edit"
+                    >
+                      ✎
+                    </button>
+                    <button
+                      type="button"
+                      className={`${styles.actionBtn} ${styles.actionDelete}`}
+                      onClick={() => handleDelete(movie)}
+                      disabled={deletingId === movie.id}
+                      title="Delete"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
               </div>
               <div className={styles.cardBody}>
                 <h3 className={styles.cardTitle}>{movie.name}</h3>
                 <StarRating value={movie.rating} disabled />
                 <div className={styles.meta}>
-                  {movie.genre && (
-                    <span className={styles.badge}>{movie.genre}</span>
-                  )}
-                  {movie.duration && (
-                    <span className={styles.duration}>{movie.duration}</span>
-                  )}
+                  {movie.genre && <span className={styles.badge}>{movie.genre}</span>}
+                  {movie.duration && <span className={styles.duration}>{movie.duration}</span>}
                 </div>
-                {movie.description && (
-                  <p className={styles.desc}>{movie.description}</p>
-                )}
               </div>
             </div>
           ))}
@@ -154,7 +197,7 @@ export default function Movies() {
       {showModal && (
         <div className={styles.overlay} onClick={closeModal}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <h2 className={styles.modalTitle}>Add Movie</h2>
+            <h2 className={styles.modalTitle}>{editingMovie ? "Edit Movie" : "Add Movie"}</h2>
             <form onSubmit={handleSubmit}>
               <div className={styles.formGroup}>
                 <label htmlFor="movie-name">Name</label>
@@ -183,9 +226,7 @@ export default function Movies() {
                 >
                   <option value="">Select genre</option>
                   {GENRES.map((g) => (
-                    <option key={g} value={g}>
-                      {g}
-                    </option>
+                    <option key={g} value={g}>{g}</option>
                   ))}
                 </select>
               </div>
@@ -195,9 +236,7 @@ export default function Movies() {
                   id="movie-duration"
                   type="text"
                   value={form.duration}
-                  onChange={(e) =>
-                    setForm({ ...form, duration: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, duration: e.target.value })}
                   placeholder="e.g. 2h 15m"
                 />
               </div>
@@ -206,9 +245,7 @@ export default function Movies() {
                 <textarea
                   id="movie-desc"
                   value={form.description}
-                  onChange={(e) =>
-                    setForm({ ...form, description: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, description: e.target.value })}
                   rows={3}
                 />
               </div>
@@ -218,9 +255,7 @@ export default function Movies() {
                   id="movie-image"
                   type="url"
                   value={form.imageUrl}
-                  onChange={(e) =>
-                    setForm({ ...form, imageUrl: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
                   placeholder="https://example.com/poster.jpg"
                 />
               </div>
@@ -242,7 +277,7 @@ export default function Movies() {
                   className={`${styles.btn} ${styles.btnSave}`}
                   disabled={saving}
                 >
-                  {saving ? "Adding…" : "Add Movie"}
+                  {saving ? "Saving…" : editingMovie ? "Save Changes" : "Add Movie"}
                 </button>
               </div>
             </form>

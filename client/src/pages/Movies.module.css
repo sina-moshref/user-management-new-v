@@ -40,8 +40,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
 }
 
 .card {
@@ -58,8 +58,9 @@
 }
 
 .poster {
+  position: relative;
   width: 100%;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   background: var(--bg);
 }
@@ -78,19 +79,63 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, var(--surface-hover), var(--bg));
-  font-size: 3rem;
+  font-size: 2.5rem;
+}
+
+/* Hover action buttons */
+.cardActions {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.35rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.card:hover .cardActions {
+  opacity: 1;
+}
+
+.actionBtn {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  color: var(--text);
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.actionBtn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.actionDelete:hover {
+  background: rgba(248, 113, 113, 0.8);
+}
+
+.actionBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .cardBody {
-  padding: 1rem;
+  padding: 0.65rem 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.3rem;
 }
 
 .cardTitle {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
@@ -100,34 +145,23 @@
 .meta {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   flex-wrap: wrap;
 }
 
 .badge {
   display: inline-block;
-  padding: 0.15rem 0.5rem;
+  padding: 0.1rem 0.4rem;
   background: rgba(167, 139, 250, 0.15);
   color: var(--accent);
   border-radius: 6px;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
 }
 
 .duration {
   color: var(--text-muted);
-  font-size: 0.8125rem;
-}
-
-.desc {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: 0.8125rem;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-size: 0.75rem;
 }
 
 .loading {
