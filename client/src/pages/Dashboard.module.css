@@ -8,7 +8,11 @@
 /* Hero */
 .hero {
   position: relative;
-  background: linear-gradient(135deg, var(--surface) 0%, rgba(167, 139, 250, 0.08) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--surface) 0%,
+    rgba(167, 139, 250, 0.08) 100%
+  );
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 2rem;
@@ -59,7 +63,11 @@
   right: -10%;
   width: 250px;
   height: 250px;
-  background: radial-gradient(circle, rgba(167, 139, 250, 0.12) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(167, 139, 250, 0.12) 0%,
+    transparent 70%
+  );
   pointer-events: none;
 }
 
@@ -90,7 +98,10 @@
   padding: 1.125rem 1.25rem;
   text-decoration: none;
   color: var(--text);
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
 }
 
 .actionCard:hover {
@@ -124,7 +135,9 @@
 .arrow {
   color: var(--text-muted);
   font-size: 1.25rem;
-  transition: transform 0.15s, color 0.15s;
+  transition:
+    transform 0.15s,
+    color 0.15s;
 }
 
 .actionCard:hover .arrow {
@@ -174,6 +187,17 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@media (max-width: 720px) {
+  .status {
+    display: none;
+  }
 }
