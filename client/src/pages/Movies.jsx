@@ -188,6 +188,7 @@ export default function Movies() {
                   {movie.genre && <span className={styles.badge}>{movie.genre}</span>}
                   {movie.duration && <span className={styles.duration}>{movie.duration}</span>}
                 </div>
+                {movie.description && <p className={styles.desc}>{movie.description}</p>}
               </div>
             </div>
           ))}
