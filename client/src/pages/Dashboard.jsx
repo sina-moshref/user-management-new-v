@@ -6,7 +6,8 @@ export default function Dashboard() {
   const { user, canAccessMovies, canAccessUsers } = useAuth();
 
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+  const greeting =
+    hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
   return (
     <div className={styles.dashboard}>
@@ -68,7 +69,7 @@ export default function Dashboard() {
           <span className={styles.infoLabel}>Role</span>
           <span className={styles.infoValue}>{user?.role}</span>
         </div>
-        <div className={styles.infoCard, styles.status}>
+        <div className={styles.infoCard} id="status">
           <span className={styles.infoLabel}>Status</span>
           <span className={styles.infoValue}>
             <span className={styles.statusDot} /> Online

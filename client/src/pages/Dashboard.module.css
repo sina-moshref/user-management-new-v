@@ -197,7 +197,7 @@
 }
 
 @media (max-width: 720px) {
-  .status {
+  #status {
     display: none;
   }
 }
