@@ -4,7 +4,18 @@ import { api } from "../api/client";
 import StarRating from "../components/StarRating";
 import styles from "./Movies.module.css";
 
-const GENRES = ["Action", "Comedy", "Drama", "Horror", "Sci-Fi", "Thriller", "Romance", "Documentary", "Animation", "Other"];
+const GENRES = [
+  "Action",
+  "Comedy",
+  "Drama",
+  "Horror",
+  "Sci-Fi",
+  "Thriller",
+  "Romance",
+  "Documentary",
+  "Animation",
+  "Other",
+];
 
 export default function Movies() {
   const { user } = useAuth();
@@ -43,7 +54,14 @@ export default function Movies() {
   }, [fetchMovies]);
 
   const openModal = () => {
-    setForm({ name: "", rating: 0, description: "", genre: "", duration: "", imageUrl: "" });
+    setForm({
+      name: "",
+      rating: 0,
+      description: "",
+      genre: "",
+      duration: "",
+      imageUrl: "",
+    });
     setFormError("");
     setShowModal(true);
   };
@@ -91,13 +109,15 @@ export default function Movies() {
         </div>
         {canAdd && (
           <button type="button" className={styles.addBtn} onClick={openModal}>
-            + Add Movie
+            + Add movie
           </button>
         )}
       </div>
 
       {movies.length === 0 ? (
-        <div className={styles.empty}>No movies yet. {canAdd ? "Add one to get started!" : ""}</div>
+        <div className={styles.empty}>
+          No movies yet. {canAdd ? "Add one to get started!" : ""}
+        </div>
       ) : (
         <div className={styles.grid}>
           {movies.map((movie) => (
@@ -115,8 +135,12 @@ export default function Movies() {
                 <h3 className={styles.cardTitle}>{movie.name}</h3>
                 <StarRating value={movie.rating} disabled />
                 <div className={styles.meta}>
-                  {movie.genre && <span className={styles.badge}>{movie.genre}</span>}
-                  {movie.duration && <span className={styles.duration}>{movie.duration}</span>}
+                  {movie.genre && (
+                    <span className={styles.badge}>{movie.genre}</span>
+                  )}
+                  {movie.duration && (
+                    <span className={styles.duration}>{movie.duration}</span>
+                  )}
                 </div>
                 {movie.description && (
                   <p className={styles.desc}>{movie.description}</p>
@@ -159,7 +183,9 @@ export default function Movies() {
                 >
                   <option value="">Select genre</option>
                   {GENRES.map((g) => (
-                    <option key={g} value={g}>{g}</option>
+                    <option key={g} value={g}>
+                      {g}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -169,7 +195,9 @@ export default function Movies() {
                   id="movie-duration"
                   type="text"
                   value={form.duration}
-                  onChange={(e) => setForm({ ...form, duration: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, duration: e.target.value })
+                  }
                   placeholder="e.g. 2h 15m"
                 />
               </div>
@@ -178,7 +206,9 @@ export default function Movies() {
                 <textarea
                   id="movie-desc"
                   value={form.description}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, description: e.target.value })
+                  }
                   rows={3}
                 />
               </div>
@@ -188,7 +218,9 @@ export default function Movies() {
                   id="movie-image"
                   type="url"
                   value={form.imageUrl}
-                  onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, imageUrl: e.target.value })
+                  }
                   placeholder="https://example.com/poster.jpg"
                 />
               </div>
@@ -198,10 +230,18 @@ export default function Movies() {
                 </div>
               )}
               <div className={styles.modalActions}>
-                <button type="button" className={`${styles.btn} ${styles.btnCancel}`} onClick={closeModal}>
+                <button
+                  type="button"
+                  className={`${styles.btn} ${styles.btnCancel}`}
+                  onClick={closeModal}
+                >
                   Cancel
                 </button>
-                <button type="submit" className={`${styles.btn} ${styles.btnSave}`} disabled={saving}>
+                <button
+                  type="submit"
+                  className={`${styles.btn} ${styles.btnSave}`}
+                  disabled={saving}
+                >
                   {saving ? "Adding…" : "Add Movie"}
                 </button>
               </div>
